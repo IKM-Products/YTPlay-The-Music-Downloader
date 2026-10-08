@@ -221,7 +221,7 @@ export default function App() {
                         <p className="text-sm font-semibold truncate text-slate-900 dark:text-slate-100 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
                           {item.title || item.url}
                         </p>
-                        <span className="uppercase text-[10px] font-extrabold px-2 py-0.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 rounded-md font-mono shrink-0">
+                        <span className="uppercase text-xs font-bold px-3 py-1 bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 rounded-lg font-mono shrink-0 shadow-xs">
                           {item.format}
                         </span>
                       </div>
