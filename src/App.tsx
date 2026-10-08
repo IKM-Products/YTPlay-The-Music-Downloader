@@ -199,7 +199,7 @@ export default function App() {
             </div>
           ) : filteredDownloads.length === 0 ? (
             <div className="text-center py-12 text-slate-500 text-xs bg-white/80 dark:bg-slate-900/20 rounded-2xl border border-rose-200/60 dark:border-slate-800/50">
-              No matching conversions found for "{searchQuery}".
+              No matching conversions found.
             </div>
           ) : (
             /* Queue Items List */

@@ -35,7 +35,6 @@ export function DownloadForm() {
   function onSubmit(values: FormValues) {
     addDownload({
       url: values.url,
-      title: "Fetching video info...",
       format: values.format,
     })
     reset()
@@ -66,7 +65,7 @@ export function DownloadForm() {
 
           {/* Controls Group */}
           <div className="flex items-center gap-2 w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0 border-border/40">
-            {/* Format Selector - Updated with clean secondary styling and uppercase font styling */}
+            {/* Format Selector */}
             <Controller
               name="format"
               control={control}
@@ -99,7 +98,7 @@ export function DownloadForm() {
       {/* Error Message */}
       {errors.url && (
         <p className="mt-2 text-xs font-medium text-rose-500 pl-4 flex items-center gap-1">
-          <span>•</span> {errors.url.message}
+          {errors.url.message}
         </p>
       )}
     </div>

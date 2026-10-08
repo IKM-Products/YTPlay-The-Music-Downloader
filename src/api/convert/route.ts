@@ -6,12 +6,12 @@ export interface ConvertRequestBody {
   format: "mp3" | "mp4" | "m4a"
 }
 
-// Request agent options to bypass basic YouTube bot blocks
 const YTDL_OPTIONS: ytdl.getInfoOptions = {
   requestOptions: {
     headers: {
       "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "Accept-Language": "en-US,en;q=0.9",
     },
   },
 }
@@ -20,26 +20,24 @@ export const convertHandler = async (req: Request, res: Response) => {
   try {
     const { url, format } = req.body as ConvertRequestBody
 
-    if (!url || typeof url !== "string") {
-      return res.status(400).json({ success: false, error: "A valid YouTube URL is required." })
-    }
-
-    if (!ytdl.validateURL(url)) {
-      return res.status(400).json({ success: false, error: "Invalid YouTube URL format." })
+    if (!url || typeof url !== "string" || !ytdl.validateURL(url)) {
+      return res.status(400).json({ success: false, error: "Invalid YouTube URL." })
     }
 
     const validFormats = ["mp3", "mp4", "m4a"]
     if (!format || !validFormats.includes(format)) {
-      return res.status(400).json({
-        success: false,
-        error: "Invalid format. Only 'mp3', 'mp4', and 'm4a' are allowed.",
-      })
+      return res.status(400).json({ success: false, error: "Invalid format requested." })
     }
 
-    const info = await ytdl.getInfo(url, YTDL_OPTIONS)
-    const title = info.videoDetails.title || "Downloaded Media"
+    // Fetch video details with automatic fallback
+    let info
+    try {
+      info = await ytdl.getBasicInfo(url, YTDL_OPTIONS)
+    } catch {
+      info = await ytdl.getBasicInfo(url)
+    }
 
-    // Use relative path so Vite proxy routes it properly
+    const title = info.videoDetails.title || "Downloaded Media"
     const downloadUrl = `/api/download?url=${encodeURIComponent(url)}&format=${format}`
 
     return res.status(200).json({
@@ -51,55 +49,72 @@ export const convertHandler = async (req: Request, res: Response) => {
     console.error("Conversion Handler Error:", error)
     return res.status(500).json({
       success: false,
-      error: error.message || "Failed to extract YouTube video metadata.",
+      error: error.message || "Failed to process YouTube link.",
     })
   }
 }
 
-/**
- * Handles direct binary media streaming to browser
- */
 export const downloadHandler = async (req: Request, res: Response) => {
   try {
     const url = req.query.url as string
-    const format = req.query.format as "mp3" | "mp4" | "m4a"
+    const format = ((req.query.format as string) || "mp3").toLowerCase()
 
     if (!url || !ytdl.validateURL(url)) {
-      return res.status(400).send("Invalid or missing YouTube URL.")
+      return res.status(400).send("Invalid YouTube URL.")
     }
 
-    const info = await ytdl.getInfo(url, YTDL_OPTIONS)
-    const rawTitle = info.videoDetails.title || "download"
-    const sanitizedTitle = rawTitle.replace(/[^a-zA-Z0-0_ -]/g, "")
+    let info
+    try {
+      info = await ytdl.getInfo(url, YTDL_OPTIONS)
+    } catch {
+      info = await ytdl.getInfo(url)
+    }
 
-    let filterOption: ytdl.Filter = "audioonly"
+    const sanitizedTitle = (info.videoDetails.title || "download").replace(/[^a-zA-Z0-9_ -]/g, "")
+
     let mimeType = "audio/mpeg"
-    let fileExtension = format
+    let options: ytdl.downloadOptions = {
+      highWaterMark: 1 << 25,
+    }
 
     if (format === "mp4") {
-      filterOption = "videoandaudio"
       mimeType = "video/mp4"
+      options.filter = (f) => Boolean(f.hasVideo && f.hasAudio)
+      options.quality = "highest"
     } else if (format === "m4a") {
-      filterOption = "audioonly"
       mimeType = "audio/mp4"
+      options.filter = (f) =>
+        Boolean(f.hasAudio && !f.hasVideo && (f.container === "mp4" || f.mimeType?.includes("audio/mp4")))
+      options.quality = "highestaudio"
     } else {
-      // Default to MP3 audio stream
-      filterOption = "audioonly"
       mimeType = "audio/mpeg"
+      options.filter = "audioonly"
+      options.quality = "highestaudio"
     }
 
-    res.setHeader("Content-Disposition", `attachment; filename="${sanitizedTitle}.${fileExtension}"`)
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${encodeURIComponent(sanitizedTitle)}.${format}"`
+    )
     res.setHeader("Content-Type", mimeType)
 
-    ytdl(url, {
-      ...YTDL_OPTIONS,
-      filter: filterOption,
-      quality: format === "mp4" ? "highest" : "highestaudio",
-    }).pipe(res)
+    const stream = ytdl(url, options)
+
+    stream.on("error", (err) => {
+      console.error("YTDL Stream Error:", err)
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Failed to download stream" })
+      } else {
+        res.destroy(err)
+      }
+    })
+
+    stream.pipe(res)
   } catch (error: any) {
-    console.error("Download Stream Error:", error)
+    console.error("Download Error:", error)
     if (!res.headersSent) {
-      res.status(500).send("Failed to stream downloaded content.")
+      res.status(500).send("Download failed.")
     }
   }
 }
