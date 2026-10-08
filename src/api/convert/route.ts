@@ -1,9 +1,12 @@
 import type { Request, Response } from "express"
-import { spawn } from "child_process"
+import ytDlp from "yt-dlp-exec"
+import path from "path"
+import fs from "fs"
+import os from "os"
 
 export interface ConvertRequestBody {
   url: string
-  format: "mp3" | "mp4" | "m4a"
+  format: "mp3" | "m4a"
 }
 
 const getYouTubeId = (url: string): string | null => {
@@ -22,7 +25,7 @@ export const convertHandler = async (req: Request, res: Response) => {
       return res.status(400).json({ success: false, error: "Invalid YouTube URL." })
     }
 
-    const validFormats = ["mp3", "mp4", "m4a"]
+    const validFormats = ["mp3", "m4a"]
     if (!format || !validFormats.includes(format)) {
       return res.status(400).json({ success: false, error: "Invalid format requested." })
     }
@@ -63,55 +66,35 @@ export const downloadHandler = async (req: Request, res: Response) => {
       return res.status(400).send("Invalid YouTube URL.")
     }
 
-    const oembedUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
-    const oembedRes = await fetch(oembedUrl)
-    const oembedData = (await oembedRes.json().catch(() => ({}))) as { title?: string }
-
-    const rawTitle = oembedData.title || "download"
-    const sanitizedTitle = rawTitle.replace(/[^a-zA-Z0-9_ -]/g, "")
-
-    let mimeType = "audio/mpeg"
-    let formatArg = "ba[ext=m4a]/ba/b"
-
-    if (format === "mp4") {
-      mimeType = "video/mp4"
-      formatArg = "bv[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/b"
-    } else if (format === "m4a") {
-      mimeType = "audio/mp4"
-      formatArg = "ba[ext=m4a]/ba"
+    const validFormats = ["mp3", "m4a"]
+    if (!validFormats.includes(format)) {
+      return res.status(400).send("Invalid format requested.")
     }
 
-    res.setHeader("Access-Control-Allow-Origin", "*")
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="${encodeURIComponent(sanitizedTitle)}.${format}"`
-    )
-    res.setHeader("Content-Type", mimeType)
+    const tmpDir = os.tmpdir()
+    const fileBase = `ytplay_${Date.now()}_${videoId}`
+    const outputFilePath = path.join(tmpDir, `${fileBase}.${format}`)
 
-    const ytProcess = spawn("npx", [
-      "yt-dlp",
-      "-f",
-      formatArg,
-      "-o",
-      "-",
-      `https://www.youtube.com/watch?v=${videoId}`,
-    ], { shell: true })
-
-    ytProcess.stdout.pipe(res)
-
-    ytProcess.stderr.on("data", (data) => {
-      console.error(`yt-dlp stderr: ${data}`)
+    // Download to temp directory first using audio-only options
+    await ytDlp(`https://www.youtube.com/watch?v=${videoId}`, {
+      format: "bestaudio/best",
+      output: outputFilePath,
+      noPlaylist: true,
+      noWarnings: true,
     })
 
-    ytProcess.on("error", (err) => {
-      console.error("yt-dlp process spawn error:", err)
-      if (!res.headersSent) {
-        res.status(500).send("Download process failed.")
+    if (!fs.existsSync(outputFilePath)) {
+      return res.status(500).send("File generation failed.")
+    }
+
+    // Serve file and delete temporary file afterwards
+    res.download(outputFilePath, (err) => {
+      if (fs.existsSync(outputFilePath)) {
+        fs.unlinkSync(outputFilePath)
       }
-    })
-
-    req.on("close", () => {
-      ytProcess.kill()
+      if (err && !res.headersSent) {
+        console.error("Download delivery error:", err)
+      }
     })
   } catch (error: any) {
     console.error("Download Error:", error)

@@ -4,7 +4,7 @@ export interface DownloadItem {
   id: string
   url: string
   title: string
-  format: 'mp3' | 'mp4' | 'm4a'
+  format: 'mp3' | 'm4a'
   status: 'idle' | 'downloading' | 'completed' | 'error'
   progress: number
   errorMessage?: string
@@ -12,7 +12,7 @@ export interface DownloadItem {
 
 interface DownloadStore {
   downloads: DownloadItem[]
-  addDownload: (item: { url: string; format: 'mp3' | 'mp4' | 'm4a' }) => Promise<void>
+  addDownload: (item: { url: string; format: 'mp3' | 'm4a' }) => Promise<void>
   updateProgress: (id: string, progress: number, status?: DownloadItem['status']) => void
   removeDownload: (id: string) => void
   clearCompleted: () => void

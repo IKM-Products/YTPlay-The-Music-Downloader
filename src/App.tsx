@@ -14,7 +14,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-  Video,
   Moon,
   Sun,
   Link2,
@@ -113,7 +112,7 @@ export default function App() {
           </div>
 
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-            Convert YouTube videos to high-quality <span className="text-slate-900 dark:text-slate-200 font-semibold">MP3, MP4, </span>and <span className="text-slate-900 dark:text-slate-200 font-semibold">M4A</span> audio seamlessly.
+            Convert YouTube videos to high-quality <span className="text-slate-900 dark:text-slate-200 font-semibold">MP3</span> and <span className="text-slate-900 dark:text-slate-200 font-semibold">M4A</span> audio seamlessly.
           </p>
         </header>
 
@@ -212,7 +211,7 @@ export default function App() {
                   <CardContent className="p-4 flex items-center gap-4">
                     {/* Media Icon Badge */}
                     <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-rose-500/20 to-red-600/10 border border-rose-500/20 flex items-center justify-center text-rose-600 dark:text-rose-400 shrink-0 group-hover:scale-105 transition-transform">
-                      {item.format === "mp4" ? <Video className="w-5 h-5" /> : <Music className="w-5 h-5" />}
+                      {<Music className="w-5 h-5" />}
                     </div>
 
                     {/* Main Content Info */}
@@ -304,7 +303,7 @@ export default function App() {
                   <span className="text-xs font-mono font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider">Step 02</span>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white">Select Format</h3>
                   <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Paste the link into the input box above and pick your target format like MP3, MP4, or M4A.
+                    Paste the link into the input box above and pick your target format like MP3, or M4A.
                   </p>
                 </div>
               </CardContent>
