@@ -113,7 +113,7 @@ export default function App() {
           </div>
 
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-            Convert YouTube videos to high-quality <span className="text-slate-900 dark:text-slate-200 font-semibold">MP3, MP4, M4A</span>, and <span className="text-slate-900 dark:text-slate-200 font-semibold">WAV</span> audio seamlessly.
+            Convert YouTube videos to high-quality <span className="text-slate-900 dark:text-slate-200 font-semibold">MP3, MP4, </span>and <span className="text-slate-900 dark:text-slate-200 font-semibold">M4A</span> audio seamlessly.
           </p>
         </header>
 
@@ -304,7 +304,7 @@ export default function App() {
                   <span className="text-xs font-mono font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider">Step 02</span>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white">Select Format</h3>
                   <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Paste the link into the input box above and pick your target format like MP3, MP4, M4A, or WAV.
+                    Paste the link into the input box above and pick your target format like MP3, MP4, or M4A.
                   </p>
                 </div>
               </CardContent>

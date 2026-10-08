@@ -14,7 +14,7 @@ const formSchema = z.object({
     .refine((val) => val.includes("youtube.com") || val.includes("youtu.be"), {
       message: "Must be a valid YouTube URL",
     }),
-  format: z.enum(["mp3", "mp4", "m4a", "wav"]),
+  format: z.enum(["mp3", "mp4", "m4a"]),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -79,7 +79,6 @@ export function DownloadForm() {
                     <SelectItem value="mp3" className="font-bold uppercase text-xs">MP3</SelectItem>
                     <SelectItem value="mp4" className="font-bold uppercase text-xs">MP4</SelectItem>
                     <SelectItem value="m4a" className="font-bold uppercase text-xs">M4A</SelectItem>
-                    <SelectItem value="wav" className="font-bold uppercase text-xs">WAV</SelectItem>
                   </SelectContent>
                 </Select>
               )}

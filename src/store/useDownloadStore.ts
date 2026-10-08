@@ -4,7 +4,7 @@ export interface DownloadItem {
   id: string
   url: string
   title: string
-  format: 'mp3' | 'mp4' | 'm4a' | 'wav'
+  format: 'mp3' | 'mp4' | 'm4a'
   status: 'idle' | 'downloading' | 'completed' | 'error'
   progress: number
 }
