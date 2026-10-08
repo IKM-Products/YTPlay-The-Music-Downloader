@@ -1,6 +1,6 @@
 # 🎵 YTPlay: The Music Downloader & Converter
 
-<img width="1855" height="931" alt="Home (Dark Theme)" src="https://github.com/user-attachments/assets/f59e9294-6a97-499d-a2b7-d75af3d74b5b" />
+<img width="1856" height="934" alt="Home (Dark Theme)" src="https://github.com/user-attachments/assets/b7478402-ec65-44d2-ad49-867ee3a4ffc7" />
 <img width="1863" height="935" alt="Converter (Dark Theme)" src="https://github.com/user-attachments/assets/e0427173-fe89-46f3-a010-2c7dc5780a6a" />
 YTPlay is a modern web-based music downloader and converter that allows users to process YouTube videos and download audio in MP3 or M4A format. It combines a clean React interface with a TypeScript/Express backend powered by yt-dlp for efficient media processing.
 
