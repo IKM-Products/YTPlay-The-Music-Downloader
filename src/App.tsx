@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useDownloadStore } from "@/store/useDownloadStore"
 import { DownloadForm } from "@/components/DownloadForm"
+import { LocalAudioConverter } from "@/components/LocalAudioConverter"
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Input } from "@/components/ui/input"
@@ -79,6 +80,12 @@ export default function App() {
               Home
             </a>
             <a
+              href="#audio-converter"
+              className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-rose-600 dark:hover:text-white hover:bg-rose-50/80 dark:hover:bg-slate-800/60 transition-all"
+            >
+              Converter
+            </a>
+            <a
               href="#how-to-download"
               className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-rose-600 dark:hover:text-white hover:bg-rose-50/80 dark:hover:bg-slate-800/60 transition-all"
             >
@@ -95,7 +102,7 @@ export default function App() {
             {isDarkMode ? (
               <Moon className="w-5 h-5 text-slate-200" />
             ) : (
-              <Sun className="w-5 h-5 text-amber-500" />
+              <Sun className="w-5 h-5 text-slate-200" />
             )}
           </button>
         </div>
@@ -263,6 +270,11 @@ export default function App() {
               ))}
             </div>
           )}
+        </section>
+
+        {/* Local Audio Format Converter Section */}
+        <section id="audio-converter" className="space-y-6 pt-4">
+          <LocalAudioConverter />
         </section>
 
         {/* How to Download Section */}
