@@ -48,25 +48,25 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Light Mode Variables (Default) */
 :root {
-  /* Color Palette Tokens */
-  --bg-deep: #08090d;
-  --card-bg: rgba(15, 17, 26, 0.75);
-  --card-border: rgba(255, 255, 255, 0.08);
-  
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --bg-deep: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(0, 0, 0, 0.08);
+
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
 
   --accent-red: #ff3355;
   --accent-red-hover: #e02443;
-  --accent-glow: rgba(255, 51, 85, 0.25);
+  --accent-glow: rgba(255, 51, 85, 0.15);
 
   --sans: 'Geist Variable', system-ui, -apple-system, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 16px/150% var(--sans);
-  color-scheme: dark;
+  color-scheme: light;
   color: var(--text-main);
   background: var(--bg-deep);
   font-synthesis: none;
@@ -74,7 +74,43 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Shadcn UI Overrides */
+  /* Shadcn UI Variables (Light Mode) */
+  --background: oklch(0.98 0.005 260);
+  --foreground: oklch(0.14 0.01 260);
+  --card: oklch(1 0 0 / 0.85);
+  --card-foreground: oklch(0.14 0.01 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.14 0.01 260);
+  --primary: oklch(0.62 0.25 22);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.01 260);
+  --secondary-foreground: oklch(0.14 0.01 260);
+  --muted: oklch(0.96 0.01 260);
+  --muted-foreground: oklch(0.45 0.01 260);
+  --destructive: oklch(0.58 0.24 27);
+  --border: oklch(0 0 0 / 10%);
+  --input: oklch(0 0 0 / 12%);
+  --ring: oklch(0.62 0.25 22 / 50%);
+  --radius: 0.85rem;
+}
+
+/* Dark Mode Overrides */
+.dark {
+  --bg-deep: #08090d;
+  --card-bg: rgba(15, 17, 26, 0.75);
+  --card-border: rgba(255, 255, 255, 0.08);
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --accent-glow: rgba(255, 51, 85, 0.25);
+
+  color-scheme: dark;
+  color: var(--text-main);
+  background: var(--bg-deep);
+
+  /* Shadcn UI Variables (Dark Mode) */
   --background: oklch(0.08 0.01 260);
   --foreground: oklch(0.98 0 0);
   --card: oklch(0.12 0.01 260 / 0.85);
@@ -91,21 +127,33 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.62 0.25 22 / 50%);
-  --radius: 0.85rem;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  
+
   html, body {
     background-color: var(--bg-deep);
     color: var(--text-main);
     min-height: 100vh;
     margin: 0;
-    /* Clean radial light bleed and crisp micro-grid pattern */
-    background-image: 
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Dynamic micro-grid background depending on theme */
+  html:not(.dark) body {
+    background-image:
+      radial-gradient(circle at 50% -10%, rgba(255, 51, 85, 0.1), transparent 50%),
+      radial-gradient(circle at 50% 100%, rgba(255, 51, 85, 0.03), transparent 40%),
+      linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  }
+
+  html.dark body {
+    background-image:
       radial-gradient(circle at 50% -10%, rgba(255, 51, 85, 0.18), transparent 50%),
       radial-gradient(circle at 50% 100%, rgba(255, 51, 85, 0.05), transparent 40%),
       linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
@@ -120,6 +168,12 @@ h1 {
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.1;
+  background: linear-gradient(180deg, #0f172a 40%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark h1 {
   background: linear-gradient(180deg, #ffffff 40%, #a1a1aa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -129,7 +183,7 @@ h1 {
 h2 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #f4f4f5;
+  color: var(--text-main);
   letter-spacing: -0.01em;
 }
 
@@ -138,55 +192,51 @@ p {
 }
 
 /* Header Badge Styling */
-.badge-header, div:has(> svg):has(span) {
+.badge-header {
   background: rgba(255, 51, 85, 0.08) !important;
   border: 1px solid rgba(255, 51, 85, 0.3) !important;
-  color: #ff6b81 !important;
-  box-shadow: 0 0 20px rgba(255, 51, 85, 0.15) !important;
+  color: #ff3355 !important;
+  box-shadow: 0 0 20px rgba(255, 51, 85, 0.1) !important;
   backdrop-filter: blur(8px);
 }
 
-/* Glassmorphism Search & Input Bar */
-.input-container, form, div:has(> input[type="text"]), div:has(> input[type="url"]) {
+.dark .badge-header {
+  color: #ff6b81 !important;
+  box-shadow: 0 0 20px rgba(255, 51, 85, 0.15) !important;
+}
+
+/* Glassmorphism Input Container */
+.input-container {
   position: relative;
   border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08) !important;
+  backdrop-filter: blur(16px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .input-container {
   background: rgba(18, 20, 29, 0.75) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   box-shadow: 
     0 20px 40px -15px rgba(0, 0, 0, 0.7),
     0 0 30px rgba(255, 51, 85, 0.12) !important;
-  backdrop-filter: blur(16px);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.input-container:focus-within, form:focus-within {
+.input-container:focus-within {
   border-color: rgba(255, 51, 85, 0.5) !important;
-  box-shadow: 
-    0 20px 40px -15px rgba(0, 0, 0, 0.8),
-    0 0 35px rgba(255, 51, 85, 0.25) !important;
+  box-shadow: 0 0 25px rgba(255, 51, 85, 0.2) !important;
 }
 
 input[type="text"], input[type="url"] {
   background: transparent !important;
-  color: #ffffff !important;
+  color: var(--text-main) !important;
   font-size: 0.95rem;
 }
 
 input::placeholder {
-  color: #64748b !important;
-}
-
-/* Select Dropdown & Options */
-select {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #e4e4e7 !important;
-  border-radius: 8px !important;
-  transition: all 0.2s ease;
-}
-
-select:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-dim) !important;
 }
 
 /* Primary Action Buttons */
@@ -196,13 +246,13 @@ button, .btn-primary {
   font-weight: 600 !important;
   border: none !important;
   border-radius: 10px !important;
-  box-shadow: 0 4px 16px rgba(255, 51, 85, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(255, 51, 85, 0.3) !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 button:hover, .btn-primary:hover {
   background: linear-gradient(135deg, #ff4d6a 0%, #ff3355 100%) !important;
-  box-shadow: 0 6px 24px rgba(255, 51, 85, 0.6) !important;
+  box-shadow: 0 6px 24px rgba(255, 51, 85, 0.5) !important;
   transform: translateY(-1px);
 }
 
@@ -210,44 +260,43 @@ button:active, .btn-primary:active {
   transform: translateY(0);
 }
 
-/* Queue Card Styling */
+/* Queue Box Styling */
 .queue-box, #queue-container {
-  background: rgba(13, 15, 22, 0.6) !important;
-  border: 1px dashed rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  border: 1px dashed rgba(0, 0, 0, 0.12) !important;
   border-radius: 16px !important;
   backdrop-filter: blur(12px);
   transition: all 0.3s ease;
 }
 
-.queue-box:hover, #queue-container:hover {
-  border-color: rgba(255, 51, 85, 0.3) !important;
-  background: rgba(15, 18, 27, 0.7) !important;
+.dark .queue-box, .dark #queue-container {
+  background: rgba(13, 15, 22, 0.6) !important;
+  border: 1px dashed rgba(255, 255, 255, 0.12) !important;
 }
 
 /* Badge Counter */
-.counter, span:has(> .counter-val) {
+.counter {
   background: rgba(255, 51, 85, 0.15) !important;
-  color: #ff4d6a !important;
+  color: #ff3355 !important;
   border: 1px solid rgba(255, 51, 85, 0.3) !important;
   font-weight: 600;
   border-radius: 9999px;
 }
 
-/* Icon Containers */
-.icon-wrapper, div:has(> svg[class*="lucide"]) {
-  border-radius: 12px;
+.dark .counter {
+  color: #ff4d6a !important;
 }
 
 /* Error Text Styling */
 .error-text {
-  color: #ff4d6a !important;
+  color: #ff3355 !important;
   font-weight: 500;
   letter-spacing: 0.01em;
 }
 
 /* Footer Styling */
 footer {
-  color: #4b5563 !important;
+  color: var(--text-dim) !important;
   font-size: 0.85rem;
   letter-spacing: 0.02em;
 }

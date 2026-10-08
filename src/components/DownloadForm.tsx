@@ -42,7 +42,7 @@ export function DownloadForm() {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full mx-auto">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="p-1.5 rounded-2xl bg-card/60 border border-border/80 backdrop-blur-xl shadow-2xl shadow-rose-500/5 transition-all duration-300 focus-within:border-rose-500/50 focus-within:ring-4 focus-within:ring-rose-500/10"
@@ -66,29 +66,29 @@ export function DownloadForm() {
 
           {/* Controls Group */}
           <div className="flex items-center gap-2 w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0 border-border/40">
-            {/* Format Selector */}
+            {/* Format Selector - Updated with clean secondary styling and uppercase font styling */}
             <Controller
               name="format"
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="h-10 px-5 bg-linear-to-r from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white font-medium shadow-md shadow-rose-600/20 rounded-xl transition-all duration-200 active:scale-[0.98] w-full sm:w-auto">
+                  <SelectTrigger className="h-10 px-4 bg-slate-900/90 border border-slate-800 hover:border-slate-700 text-slate-100 font-bold uppercase tracking-wider text-xs rounded-xl transition-all duration-200 w-24 focus:ring-1 focus:ring-rose-500/50 flex flex-row-reverse items-center justify-between [&>svg]:shrink-0">
                     <SelectValue placeholder="Format" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="mp3">MP3</SelectItem>
-                    <SelectItem value="mp4">MP4</SelectItem>
-                    <SelectItem value="m4a">M4A</SelectItem>
-                    <SelectItem value="wav">WAV</SelectItem>
+                  <SelectContent className="bg-slate-900 border-slate-800 text-slate-200">
+                    <SelectItem value="mp3" className="font-bold uppercase text-xs">MP3</SelectItem>
+                    <SelectItem value="mp4" className="font-bold uppercase text-xs">MP4</SelectItem>
+                    <SelectItem value="m4a" className="font-bold uppercase text-xs">M4A</SelectItem>
+                    <SelectItem value="wav" className="font-bold uppercase text-xs">WAV</SelectItem>
                   </SelectContent>
                 </Select>
               )}
             />
 
-            {/* Submit Button */}
+            {/* Primary Download Button */}
             <Button
               type="submit"
-              className="h-10 px-5 bg-linear-to-r from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white font-medium shadow-md shadow-rose-600/20 rounded-xl transition-all duration-200 active:scale-[0.98] w-full sm:w-auto"
+              className="h-10 px-5 bg-linear-to-r from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white font-semibold text-xs tracking-wide shadow-md shadow-rose-600/20 rounded-xl transition-all duration-200 active:scale-[0.98] w-full sm:w-auto"
             >
               <Download className="mr-2 h-4 w-4" />
               Download
