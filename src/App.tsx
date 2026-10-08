@@ -115,7 +115,7 @@ export default function App() {
 
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-500/10 dark:bg-rose-500/10 border border-rose-500/30 dark:border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-semibold tracking-wide uppercase shadow-inner backdrop-blur-md">
             <Radio className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 animate-pulse" />
-            <span>The Music Downloader</span>
+            <span>The Music Downloader & Converter</span>
           </div>
 
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
