@@ -16,6 +16,11 @@ import {
   Loader2,
   Video,
   Sparkles,
+  Moon,
+  Sun,
+  Link2,
+  Settings2,
+  Download,
 } from "lucide-react"
 
 const quickSearchSchema = z.object({
@@ -27,6 +32,7 @@ type QuickSearchValues = z.infer<typeof quickSearchSchema>
 export default function App() {
   const downloads = useDownloadStore((state) => state.downloads)
   const [activeTab, setActiveTab] = useState<"all" | "active" | "completed">("all")
+  const [isDarkMode, setIsDarkMode] = useState(true)
 
   const { control, watch } = useForm<QuickSearchValues>({
     resolver: zodResolver(quickSearchSchema),
@@ -52,7 +58,40 @@ export default function App() {
       {/* Grid Pattern Background Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-size-[32px_32px] pointer-events-none" />
 
-      <div className="relative z-10 p-4 sm:p-8 md:p-12 max-w-4xl mx-auto w-full space-y-12">
+      {/* Top Navigation Bar */}
+      <nav className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between border-b border-slate-800/40 bg-slate-950/20 backdrop-blur-md">
+        <div className="flex items-center gap-6 sm:gap-8">
+          <a
+            href="#"
+            className="text-sm sm:text-base font-semibold text-white hover:text-rose-400 transition-colors"
+          >
+            Home
+          </a>
+          <a
+            href="#how-to-download"
+            className="text-sm sm:text-base font-semibold text-white hover:text-rose-400 transition-colors"
+          >
+            How to Download
+          </a>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {/* Theme Switcher Button */}
+          <button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="p-2.5 rounded-xl bg-[#111422] border border-slate-800 text-slate-200 hover:text-white hover:border-slate-700 transition-all shadow-sm cursor-pointer"
+            aria-label="Toggle Theme"
+          >
+            {isDarkMode ? (
+              <Moon className="w-4 h-4 text-slate-200" />
+            ) : (
+              <Sun className="w-4 h-4 text-amber-400" />
+            )}
+          </button>
+        </div>
+      </nav>
+
+      <div className="relative z-10 p-4 sm:p-8 md:p-12 max-w-4xl mx-auto w-full space-y-16">
         {/* Header Branding */}
         <header className="text-center space-y-4 pt-4 sm:pt-8">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold tracking-wide uppercase shadow-inner backdrop-blur-md">
@@ -61,11 +100,11 @@ export default function App() {
           </div>
 
           <h1 className="text-5xl sm:text-6xl font-black tracking-tight bg-linear-to-b from-white via-slate-100 to-slate-400 bg-clip-text text-transparent drop-shadow-sm">
-            YTPlay<span className="text-rose-500 inline-block animate-bounce">.</span>
+            YTPlay
           </h1>
 
           <p className="text-slate-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-            Convert YouTube videos to ultra-high-fidelity <span className="text-slate-200 font-medium">MP3, MP4, FLAC</span>, and <span className="text-slate-200 font-medium">WAV</span> streams seamlessly.
+            Convert YouTube videos to ultra-high-fidelity <span className="text-slate-200 font-medium">MP3, MP4, M4A</span>, and <span className="text-slate-200 font-medium">WAV</span> streams seamlessly.
           </p>
         </header>
 
@@ -212,6 +251,68 @@ export default function App() {
               ))}
             </div>
           )}
+        </section>
+
+        {/* How to Download Section */}
+        <section id="how-to-download" className="space-y-8 pt-8 border-t border-slate-800/60">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              How to Download YouTube Videos
+            </h2>
+            <p className="text-slate-400 text-sm max-w-md mx-auto">
+              Follow these simple steps to convert and save high-quality media in seconds.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Step 1 */}
+            <Card className="border-slate-800/80 bg-slate-900/30 backdrop-blur-xl relative overflow-hidden group hover:border-slate-700 transition-all">
+              <CardContent className="p-6 space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-lg group-hover:scale-105 transition-transform">
+                  <Link2 className="w-6 h-6" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider">Step 01</span>
+                  <h3 className="text-lg font-bold text-white">Copy Video URL</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Open YouTube, navigate to your desired video, and copy the full URL from the address bar or share menu.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Step 2 */}
+            <Card className="border-slate-800/80 bg-slate-900/30 backdrop-blur-xl relative overflow-hidden group hover:border-slate-700 transition-all">
+              <CardContent className="p-6 space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-lg group-hover:scale-105 transition-transform">
+                  <Settings2 className="w-6 h-6" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider">Step 02</span>
+                  <h3 className="text-lg font-bold text-white">Select Format</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Paste the link into the input box above and pick your target format like MP3, MP4, M4A, or WAV.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Step 3 */}
+            <Card className="border-slate-800/80 bg-slate-900/30 backdrop-blur-xl relative overflow-hidden group hover:border-slate-700 transition-all">
+              <CardContent className="p-6 space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-lg group-hover:scale-105 transition-transform">
+                  <Download className="w-6 h-6" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider">Step 03</span>
+                  <h3 className="text-lg font-bold text-white">Convert & Save</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Click the Convert button and your high-quality media stream will be processed and saved automatically.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </section>
       </div>
 

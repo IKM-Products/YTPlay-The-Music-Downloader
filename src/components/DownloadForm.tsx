@@ -72,14 +72,14 @@ export function DownloadForm() {
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="w-25 h-10 border-0 bg-muted/60 hover:bg-muted font-mono text-xs uppercase tracking-wider font-semibold focus:ring-0">
+                  <SelectTrigger className="h-10 px-5 bg-linear-to-r from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white font-medium shadow-md shadow-rose-600/20 rounded-xl transition-all duration-200 active:scale-[0.98] w-full sm:w-auto">
                     <SelectValue placeholder="Format" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="mp3" className="font-mono text-xs">MP3</SelectItem>
-                    <SelectItem value="mp4" className="font-mono text-xs">MP4</SelectItem>
-                    <SelectItem value="flac" className="font-mono text-xs">FLAC</SelectItem>
-                    <SelectItem value="wav" className="font-mono text-xs">WAV</SelectItem>
+                    <SelectItem value="mp3">MP3</SelectItem>
+                    <SelectItem value="mp4">MP4</SelectItem>
+                    <SelectItem value="m4a">M4A</SelectItem>
+                    <SelectItem value="wav">WAV</SelectItem>
                   </SelectContent>
                 </Select>
               )}
