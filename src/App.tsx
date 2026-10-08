@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useDownloadStore } from "@/store/useDownloadStore"
 import { DownloadForm } from "@/components/DownloadForm"
-import { LocalAudioConverter } from "@/components/LocalAudioConverter"
+import { LocalAudioConverter } from "@/components/AudioConverter"
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Input } from "@/components/ui/input"
@@ -278,14 +278,11 @@ export default function App() {
         </section>
 
         {/* How to Download Section */}
-        <section id="how-to-download" className="space-y-8 pt-8 border-t border-rose-200/60 dark:border-slate-800/60">
-          <div className="text-center space-y-2">
+        <section id="how-to-download" className="space-y-6 pt-6">
+          <div className="text-center space-y-1.5 border-b border-rose-200/60 dark:border-slate-800/60 pb-4">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               How to Download?
             </h2>
-            <p className="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto">
-              Follow these simple steps to convert and save high-quality audio in seconds.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
