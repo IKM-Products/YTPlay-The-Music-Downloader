@@ -70,11 +70,8 @@ export default function App() {
         </header>
 
         {/* Hero Form Component */}
-        <div className="relative group">
-          <div className="absolute -inset-1 bg-linear-to-r from-rose-600 to-red-500 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
-          <div className="relative">
-            <DownloadForm />
-          </div>
+        <div className="relative">
+          <DownloadForm />
         </div>
 
         {/* Download Queue Section */}
