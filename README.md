@@ -44,7 +44,6 @@ The objective of YTPlay is to provide a simple, modern, and convenient interface
 * 🎚️ Audio quality selection
 * 📊 Download progress tracking
 * 🎶 Audio player integration
-* 📱 Improved mobile experience
 
 ## ⚠️ Disclaimer
 
